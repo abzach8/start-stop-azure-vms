@@ -12,7 +12,6 @@ Configurations:
 #==================================================================================
 
 # Transcript logging
-    Write-Host "`nTurning on transcript for troubleshooting" -ForegroundColor Yellow
     New-Item -Path $PSScriptRoot -Name "Logs" -ItemType Directory -Force
     $logpath = $PSScriptRoot + '\Logs\' + 'StartStopVMs' + ".log"
     Start-Transcript -Path $logpath -Append -Force
@@ -35,7 +34,7 @@ Write-Host "Listing subscriptions.." -ForegroundColor Yellow
 $Subscriptions = Get-AzSubscription
 if (!($Subscriptions)) 
 {
-    Write-Host "Login failed or no subscriptions found. Pls logout using Remove-AzureAccount -Name [username] and try again" -ForegroundColor Red
+    Write-Host "Login failed or no subscriptions found" -ForegroundColor Red
     exit
 }
 
@@ -48,8 +47,8 @@ try
 
         while ($true) 
         {
-            Write-Host "Make sure you have sufficient permissions to start and stop VMs on this subscription" -ForegroundColor Red
-            $input = Read-Host "Choose the subscription (1-$($Subscriptions.Length))"
+            Write-Host "Make sure you have sufficient permissions to start and stop VMs" -ForegroundColor Red
+            $input = Read-Host "Choose your subscription (1-$($Subscriptions.Length))"
             $intInput = -1
             if ([int]::TryParse($input, [ref]$intInput) -and ($intInput -ge 1 -and $intInput -le $Subscriptions.Length)) 
             {
